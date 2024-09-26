@@ -368,6 +368,19 @@ for doc in similar_docs:
     print(doc.page_content)
 ```
 
+
+or
+
+```python
+from langchain_experimental.text_splitter import SemanticChunker
+content = read_pdf_to_string(path)#path to pdf(path)
+text_splitter = SemanticChunker(OpenAIEmbeddings(), breakpoint_threshold_type='percentile', breakpoint_threshold_amount=90) # chose which embeddings and breakpoint type and threshold to use
+
+docs = text_splitter.create_documents([content])
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.from_documents(docs, embeddings)
+chunks_query_retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+```
 #### **Explanation:**
 - Semantic chunking identifies semantically coherent chunks of text. This example uses FAISS and embeddings to retrieve semantically related portions of text based on a query.
 
